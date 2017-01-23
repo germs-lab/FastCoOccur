@@ -1,3 +1,7 @@
+//usage: c++ get-co-occurrence-table.cpp -o co -fopenmp
+// ./co yourdata.csv treatment start> ct_result.tsv
+
+
 #include <stdio.h>
 #include <iostream>
 #include <string>
@@ -30,8 +34,8 @@ int main(int argc, char *argv[])
   vector <vector <double> > oritable = get_t_table();
   //printNumMatrix(oritable);
 
-  int st = 4;
-  int tr = 2;
+  int st = atoi (argv[3]);
+  int tr = atoi (argv[2]);
   //open file
   string filename = argv[1];
   vector <vector <string> > data;
