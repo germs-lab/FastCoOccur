@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 
   int st = atoi (argv[3]);
   int tr = atoi (argv[2]);
+  double pcut = atof(argv[4].c_str());
   //open file
   string filename = argv[1];
   vector <vector <string> > data;
@@ -123,7 +124,7 @@ int main(int argc, char *argv[])
     //print output
     for (int i = 0;i< num[0].size()-1;i++){
       for (int j = i+1;j < num[0].size();j++){
-	if (rep[i][j] < 0.05){
+	if (rep[i][j] < pcut){
 	  cout <<tr1<<"\t"<<data[0][i+st-1]<<"\t"<<data[0][j+st-1]<<"\t"<< rerho[i][j] <<"\t"<<rep[i][j]<<endl;
 	}
       }
