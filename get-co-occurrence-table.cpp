@@ -120,10 +120,12 @@ int main(int argc, char *argv[])
         }
      }
 
-    //output
+    //print output
     for (int i = 0;i< num[0].size()-1;i++){
       for (int j = i+1;j < num[0].size();j++){
-	cout <<tr1<<"\t"<<data[0][i+st-1]<<"\t"<<data[0][j+st-1]<<"\t"<< rerho[i][j] <<"\t"<<rep[i][j]<<endl;
+	if (rep[i][j] < 0.05){
+	  cout <<tr1<<"\t"<<data[0][i+st-1]<<"\t"<<data[0][j+st-1]<<"\t"<< rerho[i][j] <<"\t"<<rep[i][j]<<endl;
+	}
       }
     }
     
