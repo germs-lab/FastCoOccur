@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
   int st = atoi (argv[3]);
   int tr = atoi (argv[2]);
-  double pcut = atof(argv[4].c_str());
+  double pcut = atof(argv[4]);
   //open file
   string filename = argv[1];
   vector <vector <string> > data;
