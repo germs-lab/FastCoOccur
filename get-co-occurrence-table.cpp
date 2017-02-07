@@ -1,5 +1,5 @@
 //usage: c++ get-co-occurrence-table.cpp -o co -fopenmp
-// ./co yourdata.csv treatment start> ct_result.tsv
+// ./co yourdata.csv treatment start p_value> ct_result.tsv
 
 
 #include <stdio.h>
@@ -74,11 +74,11 @@ int main(int argc, char *argv[])
       row = trnum[i]+1 ;
       vector <double> Dtemp;
       for (int j = st-1;j<data[row].size();j++){
-	Dtemp.push_back(atof(data[row][j].c_str()));
+		Dtemp.push_back(atof(data[row][j].c_str()));
       }
       num.push_back(Dtemp);
     }
-
+	printNumMatrix(num);
     int nsize = num.size();
     string method = "average";
     
