@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
       }
       num.push_back(Dtemp);
     }
-	printNumMatrix(num);
+	//printNumMatrix(num);
     int nsize = num.size();
     string method = "average";
     
@@ -105,11 +105,12 @@ int main(int argc, char *argv[])
   
 	  vector<double> branks;
 	  rank(b, branks, method);
+	  
 
 	  int n = aranks.size();
 	  double sumd = 0.0;
   
-	  for (uint i = 0; i < branks.size(); ++i){
+	  for (int i = 0; i < branks.size(); ++i){
              sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
           }
 	  double rho = 1 - (6*sumd)/(n*(n*n -1));
