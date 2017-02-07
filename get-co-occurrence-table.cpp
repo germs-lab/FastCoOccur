@@ -109,8 +109,10 @@ int main(int argc, char *argv[])
 
 	  int n = aranks.size();
 	  double sumd = 0.0;
-  
-	  for (int i = 0; i < branks.size(); ++i){
+  		//for (int i = 0;i<branks.size(); i++){
+  		//	cout<< aranks[
+  		//}
+	  for (int i = 0; i < branks.size(); i++){
              sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
           }
 	  double rho = 1 - (6*sumd)/(n*(n*n -1));
