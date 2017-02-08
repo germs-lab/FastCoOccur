@@ -14,6 +14,10 @@
 #include <cstdlib>
 #include <iomanip>
 #include <math.h>
+
+#include <cmath>
+#include <cstdio>
+#include <algorithm>
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -27,6 +31,14 @@ int main(int argc, char *argv[])
   int open_csv_double (string filenameDIR,vector <vector <double> > &data);
   double calculate_p(vector <vector <double> > &oritable, int n, double t, int col);
   int find_near(vector <vector <double> > &oritable, int n, double t);
+  
+  double sum(vector<double> a);
+  double mean(vector<double> a);
+  double sqsum(vector<double> a);
+  double stdev(vector<double> nums);
+  vector<double> operator-(vector<double> a, double b);
+  vector<double> operator*(vector<double> a, vector<double> b);
+  double pearsoncoeff(vector<double> X, vector<double> Y);
 
   vector <vector <double> > get_t_table();
   double get_p(int n, double t, vector <vector <double> > &oritable);
@@ -117,6 +129,7 @@ int main(int argc, char *argv[])
              sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
           }
 	  double rho = 1 - ((6*sumd)/(n*(n*n -1)));
+	  rho = pearsoncoeff(aranks, branks)
 	  cout << rho << endl;
 
 	  rerho[nownum][nownumb] = rho;
@@ -455,4 +468,62 @@ double get_p(int n, double r,vector <vector <double> > &oritable){
     p = calculate_p(oritable, n, t, col);
   }
   return p;
+}
+
+
+
+double sum(vector<double> a)
+{
+	double s = 0;
+	for (int i = 0; i < a.size(); i++)
+	{
+		s += a[i];
+	}
+	return s;
+}
+
+double mean(vector<double> a)
+{
+	return sum(a) / a.size();
+}
+
+double sqsum(vector<double> a)
+{
+	double s = 0;
+	for (int i = 0; i < a.size(); i++)
+	{
+		s += pow(a[i], 2);
+	}
+	return s;
+}
+
+double stdev(vector<double> nums)
+{
+	double N = nums.size();
+	return pow(sqsum(nums) / N - pow(sum(nums) / N, 2), 0.5);
+}
+
+vector<double> operator-(vector<double> a, double b)
+{
+	vector<double> retvect;
+	for (int i = 0; i < a.size(); i++)
+	{
+		retvect.push_back(a[i] - b);
+	}
+	return retvect;
+}
+
+vector<double> operator*(vector<double> a, vector<double> b)
+{
+	vector<double> retvect;
+	for (int i = 0; i < a.size() ; i++)
+	{
+		retvect.push_back(a[i] * b[i]);
+	}
+	return retvect;
+}
+
+double pearsoncoeff(vector<double> X, vector<double> Y)
+{
+	return sum((X - mean(X))*(Y - mean(Y))) / (X.size()*stdev(X)* stdev(Y));
 }
