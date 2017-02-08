@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 	  for (int i = 0; i < branks.size(); i++){
              sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
           }
-	  double rho = 1 - (6*sumd)/(n*(n*n -1));
+	  double rho = 1 - ((6*sumd)/(n*(n*n -1)));
 
 	  rerho[nownum][nownumb] = rho;
 	  double p = get_p(n, rho, oritable);
