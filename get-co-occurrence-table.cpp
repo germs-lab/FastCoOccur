@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
   		for (int i = 0;i<branks.size(); i++){
   			cout<< aranks[i] << " " << branks[i] << endl;
   		}
+  		cout<<  " "  << endl;
 	  for (int i = 0; i < branks.size(); i++){
              sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
           }
