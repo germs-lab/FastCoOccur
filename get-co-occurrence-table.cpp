@@ -98,8 +98,8 @@ int main(int argc, char *argv[])
     vector <vector <double> > rerho(num[0].size(),z);
     vector <vector <double> > rep(num[0].size(),z);
 
-    //#pragma omp parallel
-    //#pragma omp for
+    #pragma omp parallel
+    #pragma omp for
     for (int nownum = 0;nownum < num[0].size()-1;nownum++){
        vector<double> a(nsize);
        for (int i = 0;i < nsize;i++){
