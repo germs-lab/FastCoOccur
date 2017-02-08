@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
              sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
           }
 	  double rho = 1 - ((6*sumd)/(n*(n*n -1)));
+	  cout << rho << endl;
 
 	  rerho[nownum][nownumb] = rho;
 	  double p = get_p(n, rho, oritable);
