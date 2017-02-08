@@ -121,16 +121,20 @@ int main(int argc, char *argv[])
 
 	  int n = aranks.size();
 	  double sumd = 0.0;
-  		for (int i = 0;i<branks.size(); i++){
-  			cout<< aranks[i] << " " << branks[i] << endl;
-  		}
-  		cout<<  " "  << endl;
-	  for (int i = 0; i < branks.size(); i++){
-             sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
-          }
-	  double rho = 1 - ((6*sumd)/(n*(n*n -1)));
-	  rho = pearsoncoeff(aranks, branks);
-	  cout << rho << endl;
+  	//	for (int i = 0;i<branks.size(); i++){
+  	//		cout<< aranks[i] << " " << branks[i] << endl;
+  	//	}
+  	//	cout<<  " "  << endl;
+  	
+  	//this use spears correlation
+	  //for (int i = 0; i < branks.size(); i++){
+       //      sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
+       //   }
+	  //double rho = 1 - ((6*sumd)/(n*(n*n -1)));
+	  
+	  //this use pearson correlation
+	  double rho = pearsoncoeff(aranks, branks);
+	  //cout << rho << endl;
 
 	  rerho[nownum][nownumb] = rho;
 	  double p = get_p(n, rho, oritable);
