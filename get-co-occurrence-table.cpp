@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
              sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
           }
 	  double rho = 1 - ((6*sumd)/(n*(n*n -1)));
-	  rho = pearsoncoeff(aranks, branks)
+	  rho = pearsoncoeff(aranks, branks);
 	  cout << rho << endl;
 
 	  rerho[nownum][nownumb] = rho;
