@@ -20,144 +20,6 @@
 #include <algorithm>
 using namespace std;
 
-int main(int argc, char *argv[])
-{
-
-  int checkFile(ifstream &input);
-  int open_csv (string filenameDIR,vector <vector <string> > &data);
-  void printMatrix(vector <vector <string> > &dad);
-  void printNumMatrix(vector <vector <double> > &dad);
-
-  int open_csv_double (string filenameDIR,vector <vector <double> > &data);
-  double calculate_p(vector <vector <double> > &oritable, int n, double t, int col);
-  int find_near(vector <vector <double> > &oritable, int n, double t);
-  
-  double sum(vector<double> a);
-  double mean(vector<double> a);
-  double sqsum(vector<double> a);
-  double stdev(vector<double> nums);
-  vector<double> operator-(vector<double> a, double b);
-  vector<double> operator*(vector<double> a, vector<double> b);
-  double pearsoncoeff(vector<double> X, vector<double> Y);
-
-  vector <vector <double> > get_t_table();
-  double get_p(int n, double t, vector <vector <double> > &oritable);
-
-  vector <vector <double> > oritable = get_t_table();
-  //printNumMatrix(oritable);
-
-  int st = atoi (argv[3]);
-  int tr = atoi (argv[2]);
-  double pcut = atof(argv[4]);
-  //open file
-  string filename = argv[1];
-  vector <vector <string> > data;
-  open_csv(filename,data);
-
-  vector <vector <string> > info;
-  for (int i = 1; i< data.size();i++){
-    vector <string> Dtemp;
-    for (int j = 0;j<st-1;j++){
-      Dtemp.push_back(data[i][j]);
-    }
-    info.push_back(Dtemp);
-  }
-
-  vector <string> trt(info.size());
-  for (int i = 0;i<info.size();i++){
-    trt[i] = info[i][tr-1];
-  }
-  sort(trt.begin(), trt.end() );
-  trt.erase (unique(trt.begin(), trt.end() ), trt.end());
-
-  string tr1;
-  for (int tri = 0;tri < trt.size();tri++){
-    tr1 = trt[tri];
-    vector <int> trnum;
-    for (int i = 0;i<info.size();i++){
-      if( info[i][tr-1] == tr1){
-	trnum.push_back(i);
-      }
-    }
-
-    vector <vector <double> > num;
-    int row;
-    for (int i = 0 ;i<trnum.size();i++){
-      row = trnum[i]+1 ;
-      vector <double> Dtemp;
-      for (int j = st-1;j<data[row].size();j++){
-		Dtemp.push_back(atof(data[row][j].c_str()));
-      }
-      num.push_back(Dtemp);
-    }
-	//printNumMatrix(num);
-    int nsize = num.size();
-    string method = "average";
-    
-    vector <double> z(num[0].size());
-    vector <vector <double> > rerho(num[0].size(),z);
-    vector <vector <double> > rep(num[0].size(),z);
-
-    #pragma omp parallel
-    #pragma omp for
-    for (int nownum = 0;nownum < num[0].size()-1;nownum++){
-       vector<double> a(nsize);
-       for (int i = 0;i < nsize;i++){
-         a[i] = num[i][nownum];
-       }
-       vector<double> aranks;
-       rank(a, aranks, method);
-
-       for (int nownumb = nownum+1;nownumb < num[0].size();nownumb++){
-          vector<double> b(nsize);
-
-	  for (int i = 0;i < nsize;i++){
-            b[i] = num[i][nownumb];
-          }
-  
-	  vector<double> branks;
-	  rank(b, branks, method);
-	  
-
-	  int n = aranks.size();
-	  double sumd = 0.0;
-  	//	for (int i = 0;i<branks.size(); i++){
-  	//		cout<< aranks[i] << " " << branks[i] << endl;
-  	//	}
-  	//	cout<<  " "  << endl;
-  	
-  	//this use spears correlation
-	  //for (int i = 0; i < branks.size(); i++){
-       //      sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
-       //   }
-	  //double rho = 1 - ((6*sumd)/(n*(n*n -1)));
-	  
-	  //this use pearson correlation
-	  double rho = pearsoncoeff(aranks, branks);
-	  //cout << rho << endl;
-
-	  rerho[nownum][nownumb] = rho;
-	  double p = get_p(n, rho, oritable);
-	  rep[nownum][nownumb] = p;
-
-        }
-     }
-
-    //print output
-    for (int i = 0;i< num[0].size()-1;i++){
-      for (int j = i+1;j < num[0].size();j++){
-	if (rep[i][j] < pcut){
-	  cout <<tr1<<"\t"<<data[0][i+st-1]<<"\t"<<data[0][j+st-1]<<"\t"<< rerho[i][j] <<"\t"<<rep[i][j]<<endl;
-	}
-      }
-    }
-    
-   
-
-
-  }
-    
-}
 // check openfile
 int checkFile(ifstream &input)
 {
@@ -530,4 +392,238 @@ vector<double> operator*(vector<double> a, vector<double> b)
 double pearsoncoeff(vector<double> X, vector<double> Y)
 {
 	return sum((X - mean(X))*(Y - mean(Y))) / (X.size()*stdev(X)* stdev(Y));
+}
+
+
+
+void nrerror( char error_text[]) {
+  fprintf( stderr, "Error: %s\n", error_text);
+  exit(1);
+}
+
+
+float betai(float a, float b, float x)
+// Returns the incomplete beta function Ix(a, b).
+{
+  float betacf(float a, float b, float x);
+  float gammln(float xx);
+  void nrerror(char error_text[]);
+  float bt;
+  if (x < 0.0 || x > 1.0) 
+    nrerror("Bad x in routine betai");
+  if (x == 0.0 || x == 1.0) 
+    bt=0.0;
+  else // Factors in front of the continued fraction.
+    bt=exp(gammln(a+b)-gammln(a)-gammln(b)+a*log(x)+b*log(1.0-x));
+  if (x < (a+1.0)/(a+b+2.0)) // Use continued fraction directly.
+    return bt*betacf(a,b,x)/a;
+  else // Use continued fraction after making the sym
+    return 1.0-bt*betacf(b,a,1.0-x)/b; // metry transformation.
+}
+
+
+#define MAXIT 100
+#define EPS 3.0e-7
+#define FPMIN 1.0e-30
+float betacf(float a, float b, float x)
+// Used by betai: Evaluates continued fraction for incomplete beta function by modiﬁed Lentz’s method (§5.2).
+{
+  void nrerror(char error_text[]);
+  int m,m2;
+  float aa,c,d,del,h,qab,qam,qap;
+  qab=a+b; // These q’s will be used in factors that occur
+  qap=a+1.0; // in the coeﬃcients (6.4.6).
+  qam=a-1.0;
+  c=1.0; // First step of Lentz’s method.
+  d=1.0-qab*x/qap;
+  if (fabs(d) < FPMIN) 
+    d=FPMIN;
+  d=1.0/d;
+  h=d;
+  for (m=1;m<=MAXIT;m++) {
+    m2=2*m;
+    aa=m*(b-m)*x/((qam+m2)*(a+m2));
+    d=1.0+aa*d; // One step (the even one) of the recurrence.
+    if (fabs(d) < FPMIN) d=FPMIN;
+    c=1.0+aa/c;
+    if (fabs(c) < FPMIN) c=FPMIN;
+    d=1.0/d;
+    h *= d*c;
+    aa = -(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d=1.0+aa*d; // Next step of the recurrence (the odd one).
+    if (fabs(d) < FPMIN) d=FPMIN;
+    c=1.0+aa/c;
+    if (fabs(c) < FPMIN) c=FPMIN;
+    d=1.0/d;
+    del=d*c;
+    h *= del;
+    if (fabs(del-1.0) < EPS) break; // Are we done?
+  }
+  if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
+  return h;
+}
+
+
+float gammln(float xx)
+// Returns the value ln[Γ(xx)] for xx > 0.
+{
+  // Internal arithmetic will be done in double precision, a nicety that you can omit if ﬁve-ﬁgure
+  // accuracy is good enough.
+  double x,y,tmp,ser;
+  static double cof[6]={76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5};
+  int j;
+  y=x=xx;
+  tmp=x+5.5;
+  tmp -= (x+0.5)*log(tmp);
+  ser=1.000000000190015;
+  for (j=0;j<=5;j++) ser += cof[j]/++y;
+  return -tmp+log(2.5066282746310005*ser/x);
+}
+
+
+float pvalue( float t, float df ) 
+// Compute p-value of t-statistic
+{
+  return betai(0.5*df,0.5,df/(df+t*t));
+}
+
+
+
+int main(int argc, char *argv[])
+{
+
+  int checkFile(ifstream &input);
+  int open_csv (string filenameDIR,vector <vector <string> > &data);
+  void printMatrix(vector <vector <string> > &dad);
+  void printNumMatrix(vector <vector <double> > &dad);
+
+  int open_csv_double (string filenameDIR,vector <vector <double> > &data);
+  double calculate_p(vector <vector <double> > &oritable, int n, double t, int col);
+  int find_near(vector <vector <double> > &oritable, int n, double t);
+  
+  double sum(vector<double> a);
+  double mean(vector<double> a);
+  double sqsum(vector<double> a);
+  double stdev(vector<double> nums);
+  vector<double> operator-(vector<double> a, double b);
+  vector<double> operator*(vector<double> a, vector<double> b);
+  double pearsoncoeff(vector<double> X, vector<double> Y);
+
+  vector <vector <double> > get_t_table();
+  double get_p(int n, double t, vector <vector <double> > &oritable);
+
+  vector <vector <double> > oritable = get_t_table();
+  //printNumMatrix(oritable);
+
+  int st = atoi (argv[3]);
+  int tr = atoi (argv[2]);
+  double pcut = atof(argv[4]);
+  //open file
+  string filename = argv[1];
+  vector <vector <string> > data;
+  open_csv(filename,data);
+
+  vector <vector <string> > info;
+  for (int i = 1; i< data.size();i++){
+    vector <string> Dtemp;
+    for (int j = 0;j<st-1;j++){
+      Dtemp.push_back(data[i][j]);
+    }
+    info.push_back(Dtemp);
+  }
+
+  vector <string> trt(info.size());
+  for (int i = 0;i<info.size();i++){
+    trt[i] = info[i][tr-1];
+  }
+  sort(trt.begin(), trt.end() );
+  trt.erase (unique(trt.begin(), trt.end() ), trt.end());
+
+  string tr1;
+  for (int tri = 0;tri < trt.size();tri++){
+    tr1 = trt[tri];
+    vector <int> trnum;
+    for (int i = 0;i<info.size();i++){
+      if( info[i][tr-1] == tr1){
+	trnum.push_back(i);
+      }
+    }
+
+    vector <vector <double> > num;
+    int row;
+    for (int i = 0 ;i<trnum.size();i++){
+      row = trnum[i]+1 ;
+      vector <double> Dtemp;
+      for (int j = st-1;j<data[row].size();j++){
+		Dtemp.push_back(atof(data[row][j].c_str()));
+      }
+      num.push_back(Dtemp);
+    }
+	//printNumMatrix(num);
+    int nsize = num.size();
+    string method = "average";
+    
+    vector <double> z(num[0].size());
+    vector <vector <double> > rerho(num[0].size(),z);
+    vector <vector <double> > rep(num[0].size(),z);
+
+    #pragma omp parallel
+    #pragma omp for
+    for (int nownum = 0;nownum < num[0].size()-1;nownum++){
+       vector<double> a(nsize);
+       for (int i = 0;i < nsize;i++){
+         a[i] = num[i][nownum];
+       }
+       vector<double> aranks;
+       rank(a, aranks, method);
+
+       for (int nownumb = nownum+1;nownumb < num[0].size();nownumb++){
+          vector<double> b(nsize);
+
+	  for (int i = 0;i < nsize;i++){
+            b[i] = num[i][nownumb];
+          }
+  
+	  vector<double> branks;
+	  rank(b, branks, method);
+	  
+
+	  int n = aranks.size();
+	  double sumd = 0.0;
+  	//	for (int i = 0;i<branks.size(); i++){
+  	//		cout<< aranks[i] << " " << branks[i] << endl;
+  	//	}
+  	//	cout<<  " "  << endl;
+  	
+  	//this use spears correlation
+	  //for (int i = 0; i < branks.size(); i++){
+       //      sumd = sumd + (aranks[i] - branks[i]) * (aranks[i] - branks[i]);
+       //   }
+	  //double rho = 1 - ((6*sumd)/(n*(n*n -1)));
+	  
+	  //this use pearson correlation
+	  double rho = pearsoncoeff(aranks, branks);
+	  //cout << rho << endl;
+
+	  rerho[nownum][nownumb] = rho;
+	  double p = get_p(n, rho, oritable);
+	  rep[nownum][nownumb] = p;
+
+        }
+     }
+
+    //print output
+    for (int i = 0;i< num[0].size()-1;i++){
+      for (int j = i+1;j < num[0].size();j++){
+	if (rep[i][j] < pcut){
+	  cout <<tr1<<"\t"<<data[0][i+st-1]<<"\t"<<data[0][j+st-1]<<"\t"<< rerho[i][j] <<"\t"<<rep[i][j]<<endl;
+	}
+      }
+    }
+    
+   
+
+
+  }
+    
 }
