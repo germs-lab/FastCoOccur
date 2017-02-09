@@ -422,7 +422,7 @@ float betai(float a, float b, float x)
 }
 
 
-#define MAXIT 100
+#define MAXIT 1000
 #define EPS 3.0e-7
 #define FPMIN 1.0e-30
 float betacf(float a, float b, float x)
