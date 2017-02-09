@@ -607,7 +607,7 @@ int main(int argc, char *argv[])
 	  //cout << rho << endl;
 
 	  rerho[nownum][nownumb] = rho;
-	  float t = rho * (n-2)/(1-rho*rho);
+	  float t = rho * sqrt((n-2)/(1-rho*rho));
 	  float df = n - 1;
 	  float p = pvalue( t, df );
 	  //double p = get_p(n, rho, oritable);
