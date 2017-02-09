@@ -422,7 +422,7 @@ float betai(float a, float b, float x)
 }
 
 
-#define MAXIT 100000
+#define MAXIT 1000
 #define EPS 3.0e-7
 #define FPMIN 1.0e-30
 float betacf(float a, float b, float x)
@@ -459,7 +459,7 @@ float betacf(float a, float b, float x)
     h *= del;
     if (fabs(del-1.0) < EPS) break; // Are we done?
   }
-  if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
+  //if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
   return h;
 }
 
