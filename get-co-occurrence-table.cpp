@@ -501,6 +501,7 @@ int main(int argc, char *argv[])
   double calculate_p(vector <vector <double> > &oritable, int n, double t, int col);
   int find_near(vector <vector <double> > &oritable, int n, double t);
   
+  
   double sum(vector<double> a);
   double mean(vector<double> a);
   double sqsum(vector<double> a);
@@ -606,7 +607,10 @@ int main(int argc, char *argv[])
 	  //cout << rho << endl;
 
 	  rerho[nownum][nownumb] = rho;
-	  double p = get_p(n, rho, oritable);
+	  float t = rho * (n-2)/(1-rho*rho);
+	  float df = n - 1;
+	  float p = pvalue( t, df );
+	  //double p = get_p(n, rho, oritable);
 	  rep[nownum][nownumb] = p;
 
         }
