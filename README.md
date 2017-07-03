@@ -30,3 +30,14 @@ filter by rho
 python filter_co_result.py result_file.tsv 0.6 > filtered.result.tsv
 ```
 ### Step 4: Plot or additional analysis in R
+
+
+## Run on MSU's HPCC
+Here example is provided to run co-occurence in MSU's HPCC. Copy example qsub file into your working directory
+```
+cp /mnt/research/germs/softwares/co-occurrence/example.qsub .
+```
+Change filename, then submit job
+```
+qsub example.qsub
+```
