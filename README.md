@@ -14,10 +14,10 @@ run
 ```
 ./co -f data_table -t col#_of_treatment -s col#_of_starting_data -p 0.05> result.tsv
 ```
--f : input file name
--t : number of comlumn that contain treatment
--s : number of comlumn start actual data
--p : p-value cut off
+* -f : input file name
+* -t : number of comlumn that contain treatment
+* -s : number of comlumn start actual data
+* -p : p-value cut off
 
 example
 ```
