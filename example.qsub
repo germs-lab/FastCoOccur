@@ -1,0 +1,37 @@
+#!/bin/bash -login
+
+### define resources needed:
+### walltime - how long you expect the job to run
+#PBS -l walltime=1:00:00:00
+ 
+### nodes:ppn - how many nodes & cores per node (ppn) that you require
+#PBS -l nodes=1:ppn=10
+
+### mem: amount of memory that the job will need
+#PBS -l mem=100gb
+
+#PBS -q main
+#PBS -M genase23@gmail.com
+#PBS -m abe
+
+### you can give your job a name for easier identification
+#PBS -N co-occur
+
+### load module
+module load GNU/4.9
+module load OpenMPI/1.10.0
+
+### Change directory
+cd /mnt/research/germs/jin/co-occurence
+
+# set the number of OpenMP threads
+export OMP_NUM_THREADS=10
+
+### Change directory                                                                                                                               
+cd /mnt/research/germs/your_directory
+
+### call
+# in case
+tr '\15' '\n' < inputfile.csv > inputfile.unix.csv
+# run
+/mnt/research/germs/softwares/co-occurrence/co -f inputfile.unix.csv -t 2 -s 3 -p 0.05 > outputfile.tsv
