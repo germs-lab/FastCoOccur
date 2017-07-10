@@ -4,7 +4,7 @@ This repository helps you to run co-occurrence anlaysis
 ### Step 1 : Prepare table
 Your input file needs to be in one table in CSV format with treatment info in front.
 
-Tips if you use MSU's HPCC;
+See convert_data_format.R
 
 
 ### Step 2: run co-occurrence 
@@ -47,8 +47,8 @@ qsub example.qsub
 
 
 
-#### Tips for MSU's HPCC
-to install R library 
+### Tips for MSU's HPCC
+####to install R library 
 
 Make directory into your home directory such as;
 ```
@@ -63,4 +63,13 @@ echo "export R_LIBS_USER=$/mnt/home/YOUR_ID/R/library" >> ~/.bashrc
 Load module
 ```
 module load R/3.2.0
+```
+#### Use multiple core
+```
+export OMP_NUM_THREADS=10
+```
+#### compile c++ using multi-core
+```
+module load GNU/4.9
+module load OpenMPI/1.10.0
 ```
