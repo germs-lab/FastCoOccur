@@ -24,13 +24,13 @@ run
 
 example
 ```
-./co -f test.unix.csv -t 2 -s 3 -p 0.05
+./co -f sample_input_file.csv -t 2 -s 3 -p 0.05 > sample_result_p0.05.tsv
 ```
 
 ### Step 3: filter result
 filter by rho
 ```
-python filter_co_result.py result_file.tsv 0.6 > filtered.result.tsv
+python filter_co_result.py sample_result_p0.05.tsv 0.6 > sample_result_p0.05_r0.6.tsv
 ```
 ### Step 4: Plot or additional analysis in R
 
