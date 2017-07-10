@@ -4,6 +4,9 @@ This repository helps you to run co-occurrence anlaysis
 ### Step 1 : Prepare table
 Your input file needs to be in one table in CSV format with treatment info in front.
 
+Tips if you use MSU's HPCC;
+
+
 ### Step 2: run co-occurrence 
 compile
 ```
@@ -40,4 +43,24 @@ cp /mnt/research/germs/softwares/co-occurrence/example.qsub .
 Change filename, then submit job
 ```
 qsub example.qsub
+```
+
+
+
+#### Tips for MSU's HPCC
+to install R library 
+
+Make directory into your home directory such as;
+```
+~/R/library
+```
+
+Then add export into .bashrc file. 
+```
+echo "export R_LIBS_USER=$/mnt/home/YOUR_ID/R/library" >> ~/.bashrc
+```
+
+Load module
+```
+module load R/3.2.0
 ```
