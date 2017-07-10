@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
   //Read data
   vector <vector <string> > data;
   open_csv(filename,data);
-  printMatrix(data);
+
   vector <vector <string> > info;
   for (int i = 1; i< data.size();i++){
     vector <string> Dtemp;
