@@ -1,6 +1,9 @@
 library(vegan)
 library(reshape)
 
+##############################################
+###### Read data and make it appropriate format  #####
+##############################################
 # read in your dataset here
 dataset<-read.csv("sample_inputdata.csv")
 head(dataset)
@@ -8,8 +11,11 @@ head(dataset)
 trts<-as.vector(unique(dataset$treatment))
 trts
 
-results<-data.frame()
+################################
+###### Calculation perform here  #####
+################################
 
+results<-data.frame()
 options(warnings=-1)
 for(a in 1:length(trts)){
 	# replace #treatment# with your actual variable name here that determines treatments
@@ -43,6 +49,9 @@ for(a in 1:length(trts)){
 	}	
 }
 
+#######################
+###### Visualization   #####
+#######################
 names(results)<-c("trt","taxa1","taxa2","rho","p.value","ab1","ab2")
 head(results)
 hist(results$p.value)
