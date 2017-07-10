@@ -49,6 +49,7 @@ int open_csv (string filenameDIR,vector <vector <string> > &data){
 	  string s1;
 	  if(!getline(ss,s1,',')) break;
 	  if(s1!=""){
+	    s1.erase(remove( s1.begin(), s1.end(), '\"' ),s1.end());
 	    record.push_back(s1);
 	  }
 	}
@@ -250,12 +251,12 @@ int main(int argc, char *argv[])
   int tr = 0;
   double pcut = 0.0;
   string filename = "";
+  
   //Read argument
   if (argc < 5){
     cout << "Usage is ./co -f <infile> -t <treatment> -s <start> -p <pvalue>\n";
     exit(0);
   }else {
-    cout<<argc;
     for (int i=1;i < argc;i+=2){
       if (i + 1 != argc){
 	if (string(argv[i]) == "-f") {
@@ -273,11 +274,11 @@ int main(int argc, char *argv[])
       }
     }
   }
-
+  
   //Read data
   vector <vector <string> > data;
   open_csv(filename,data);
-
+  printMatrix(data);
   vector <vector <string> > info;
   for (int i = 1; i< data.size();i++){
     vector <string> Dtemp;
@@ -286,7 +287,8 @@ int main(int argc, char *argv[])
     }
     info.push_back(Dtemp);
   }
-
+  
+  
   //get treatment
   vector <string> trt(info.size());
   for (int i = 0;i<info.size();i++){
@@ -358,7 +360,7 @@ int main(int argc, char *argv[])
 
         }
      }
-
+    
     //print output
     for (int i = 0;i< num[0].size()-1;i++){
       for (int j = i+1;j < num[0].size();j++){
@@ -367,7 +369,7 @@ int main(int argc, char *argv[])
 	}
       }
     }
-    
+     
   }
-    
+  
 }
