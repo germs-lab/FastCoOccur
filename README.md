@@ -10,12 +10,12 @@ See convert_data_format.R
 ### Step 2: run co-occurrence 
 compile
 ```
-c++ get-co-occurrence-table.cpp -o co -fopenmp
+c++ get-co-occurrence-table.cpp -o FastCoOccur -fopenmp
 ```
 
 run
 ```
-./co -f data_table -t col#_of_treatment -s col#_of_starting_data -p 0.05> result.tsv
+./FastCoOccur -f data_table -t col#_of_treatment -s col#_of_starting_data -p 0.05> result.tsv
 ```
 * -f : input file name
 * -t : number of comlumn that contain treatment
@@ -24,7 +24,7 @@ run
 
 example
 ```
-./co -f sample_input_file.csv -t 2 -s 3 -p 0.05 > sample_result_p0.05.tsv
+./FastCoOccur -f sample_input_file.csv -t 2 -s 3 -p 0.05 > sample_result_p0.05.tsv
 ```
 
 ### Step 3: filter result
